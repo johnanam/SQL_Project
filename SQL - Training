@@ -1,0 +1,1039 @@
+
+/* CREATING TABLES */
+
+CREATE TABLE employee(
+ first_name varchar(20),
+ mid_name varchar(20),
+ last_name varchar(20),
+ age int,
+ salary int,
+ location varchar(20)
+);
+
+DROP TABLE employee;
+
+ /* Inserting Data/Records into the Table:*/
+
+INSERT INTO employee VALUES ('Raja','Ram','Roy',32,35000,'Hyderabad');
+
+INSERT INTO employee (first_name, last_name,age,salary,location) 
+  VALUES ('Mohan','Roy',28,35000,'Hyderabad');
+
+drop table employee;
+
+/* CONSTRAINTS*/
+
+CREATE TABLE employee(
+first_name varchar(20) NOT NULL,
+mid_name varchar(20),
+last_name varchar(20) NOT NULL,
+age int NOT NULL,
+salary int NOT NULL,
+location varchar(20) DEFAULT 'Hyderbad' NOT NULL
+);
+
+INSERT INTO employee (first_name,mid_name,last_name,age,salary) VALUES ('John','Otieno','Anam',20,8000);
+
+select * from employee;
+
+
+ /* Day 3 */
+
+/*  Primary Key,  Composite Primary Key, Unique Key.*/
+
+create table student(
+first_name varchar(20) not null,
+last_name varchar(20) not null,
+age int not null,
+course_enrolled varchar(20) not null default 'Data Analytics',
+course_fee int not null
+);
+
+---drop table student;
+
+insert into student(first_name,last_name,age,course_fee) values ('Madhavi','Kumari',24,40000);
+insert into student(first_name,last_name,age,course_fee) values ('Madhavi','Kumari',24,40000);
+
+select * from student;
+drop table student;
+
+/* CREATE A TABLE WITH AN "ID"COLUMN */
+
+create table student(
+id int,
+first_name varchar(20) not null,
+last_name varchar(20) not null,
+age int not null,
+course_enrolled varchar(20) not null default 'Data Analytics',
+course_fee int not null
+);
+
+
+insert into student(id,first_name,last_name,age,course_fee) values (1,'Madhavi','Kumari',24,40000);
+insert into student(id,first_name,last_name,age,course_fee) values (1,'Madhavi','Kumari',24,40000);
+
+select * from student;
+drop table student;
+
+/* Primary */
+
+create table student(
+id int primary key,
+first_name varchar(20) not null,
+last_name varchar(20) not null,
+age int not null,
+course_enrolled varchar(20) not null default 'Data Analytics',
+course_fee int not null
+);
+
+insert into student(id,first_name,last_name,age,course_fee) values (null,'Madhavi','Kumari',24,40000);
+
+--- this will show an error because Primary Key cannot be null.
+
+insert into student(id,first_name,last_name,age,course_fee) values (1,'Madhavi','Kumari',24,40000);
+insert into student(id,first_name,last_name,age,course_fee) values (1,'Madhavi','Kumari',24,40000);
+---this will show an error that primary key cannot be duplicate
+
+insert into student(id,first_name,last_name,age,course_fee) values (2,'Madhavi','Kumari',24,40000);
+
+select * from student;
+
+----drop table student;
+
+create table student(
+id int,
+first_name varchar(20) not null,
+last_name varchar(20) not null,
+age int not null,
+course_enrolled varchar(20) not null default 'Data Analytics',
+course_fee int not null,
+primary key(id)
+);
+
+insert into student(id,first_name,last_name,age,course_fee) values (1,'Madhavi','Kumari',24,40000);
+insert into student(id,first_name,last_name,age,course_fee) values (2,'Madhavi','Kumari',24,40000);
+
+select * from student;
+
+/* COMPOSITE PRIMARY KEY */
+
+create table sales_rep(
+rep_fname varchar(20) not null,
+rep_lname varchar(20) not null,
+salary int not null
+);
+
+insert into sales_rep(rep_fname,rep_lname,salary) values('Anil','Sharma',25000),
+('Ankit','Verma',30000),('Anil','Sharma',25000);
+
+select * from sales_rep;
+
+drop table sales_rep;
+
+--- how to introduce composite primary key in table 
+
+create table sales_rep(
+rep_fname varchar(20) not null,
+rep_lname varchar(20) not null,
+salary int not null,
+primary key(rep_fname,rep_lname)
+);
+
+insert into sales_rep(rep_fname,rep_lname,salary) values('Anil','Sharma',25000),
+('Ankit','Verma',30000),('Anil','Sharma',25000);
+
+--- will throw an error
+
+insert into sales_rep(rep_fname,rep_lname,salary) values('Anil','Sharma',25000),
+('Ankit','Verma',30000),('Sunil','Sharma',25000);
+
+select * from sales_rep;
+
+
+---Primary Key is used to recognize each record in a distinct manner, it will not accept nulls and there can be only one Primary Key in a table.
+---Primary Key could be on multiple columns - Composite Primary Key.
+
+
+---UNIQUE KEY - ALLOW ONLY DISTINCT VALUES TO BE ENTERED IN A FIELD.
+---A Table can have multiple Unique Keys. Null entries are allowed.
+
+create table email_registration(
+f_name varchar(20) not null,
+l_name varchar(20) not null,
+email varchar(50) not null
+);
+
+insert into email_registration values ('Mohan','Bhargav','mohan_b@gmail.com');
+insert into email_registration values ('Mohan','Bhajpai','mohan_b@gmail.com');
+
+select * from email_registration; 
+
+--- 2 people with the same email id, whic should not be allowed
+
+drop table email_registration;
+---- use of unique constrain 
+
+create table email_registration(
+f_name varchar(20),
+l_name varchar(20),
+email varchar(50) unique,
+primary key(f_name,l_name)
+);
+
+insert into email_registration values ('Mohan','Bhargav','mohan_b@gmail.com');
+
+insert into email_registration values ('Mohan','Bhajpai',null);
+
+---will be allowed;
+
+drop table email_registration;
+
+--- not null and unique constrain 
+
+create table email_registration(
+f_name varchar(20) not null,
+l_name varchar(20) not null,
+email varchar(50) not null unique ,
+primary key(f_name,l_name)
+);
+
+---desc email_registration;
+
+insert into email_registration values ('Mohan','Bhargav','mohan_b@gmail.com');
+insert into email_registration values ('Mohan','Bhajpai','mohan_b@gmail.com');
+--- second insert statement will throw an error "duplicate entry)
+
+insert into email_registration values ('Mohan','Bhajpai',null);
+---wont work as 'null' is given for email, which voilates the not null constraint
+
+insert into email_registration values ('Mohan','Bhajpai','mohan_bhajpai@gmail.com');
+
+insert into email_registration values ('Sakshi',null,'sakshi@gmail.com');
+insert into email_registration values ('Sakshi','Rajpoot','sakshi_r@gmail.com');
+
+select * from email_registration;
+
+---UNIQUE KEY is used to make sure unique values (no duplicates) are entered into a field.
+---UNIQUE KEY can take NULL also, and we can have multiple unique keys in a table.
+
+
+/* Difference between Primary Key and Unique Key */
+
+--1) There can be only 1 Primary key, whereas there can be multiple Unique Keys
+--2) Primary Key cannot be NULL, whereas Unique Key could be NULL
+
+
+/* DAY 4 */
+
+--- Foreign Key Constraint, Check Constraint, DDL Commands (Create, Alter, Drop and Truncate)
+--- Create a Department table with the names of all the departments in the company
+
+create table department2(
+dept_name varchar(20) primary key,
+dept_head varchar(20)
+);
+
+drop table department2;
+
+--Insert data into the departments table - 
+
+insert into department2 (dept_name,dept_head) values ('IT','Ravi Kiran'),
+('Finance',null),
+('HR','Swati Rao');
+
+select * from department2;
+
+---Create a table employee-
+
+create table employee(
+id int primary key,
+f_nm varchar(20) not null,
+l_nm varchar(20) not null,
+age int not null,
+location varchar(20) not null default 'Hyderabad',
+dept varchar(20) not null
+);
+
+drop table employee;
+
+---Insert some values into it - 
+
+insert into employee (id,f_nm,l_nm,age,dept) values (1,'mohan','bhargav',30,'IT'),
+(2,'manoj','bajpai',35,'HR'),(3,'Rani','Kumari',40,'Finance');
+
+---Insert more records into employee with new departments -
+
+insert into employee (id,f_nm,l_nm,age,dept) values (4,'priya','darshini',30,'HealthCare');
+
+----Add the foreign key contraint - using alter 
+
+alter table employee add foreign key(dept) references department2(dept_name); --- referencing 
+
+----This will fail as we already have a record with Health Care.
+
+--Let's delete that record.
+
+select * from department2;
+
+delete from employee where dept = 'HealthCare';
+
+--Now add the constraint - 
+
+alter table employee add foreign key(dept) references department2(dept_name);
+
+---Now try inserting a record with a deparment name that is not in the department table - 
+
+insert into employee (id,f_nm,l_nm,age,dept) values (5,'priya','darshini',30,'HealthCare');
+
+insert into employee (id,f_nm,l_nm,age,dept) values (6,'priya','darshini',30,'IT');
+
+---Now let's try to delete a department from the department table - 
+
+delete from department2 where dept_name = 'HR'; 
+
+---This is not allowed due to the foreign key constraint. 
+
+---Suppose, there is no data in employee table with that department, then what would happen -
+
+delete from employee where dept = 'HR';
+
+---Now, the (delete from department where dept_name = "HR";) statement will work.
+
+
+---CHECK Constraint:
+
+create table school (
+name varchar(20), 
+schoolname varchar(10) default 'JKUAT', 
+age int, 
+check (age>= 10));
+
+drop table school;
+
+insert into school (name, age) values ('Ram',10), ('Ravi',20);
+select * from school;
+insert into school (name,age)  values ('Priya',8); ----new row for relation "school" violates check constraint "school_age_check"
+
+--Eg 2:
+
+CREATE TABLE products ( product_no integer, name text, price numeric CHECK (price > 0) );
+
+insert into products values(1,'apples',100.00),(2,'oranges',200.00);
+
+select * from products;
+
+
+insert into products values(3,'grapes',-100.00),(4,'plums',200.00);---- 	new row for relation "products" violates check constraint "products_price_check"
+insert into products values(3,'grapes',150.00),(4,'plums',200.00);
+
+
+--- DDL - Create, Alter, Drop, Truncate
+
+---Alter Statement-
+
+---To Add a Column: ALTER TABLE table_name ADD column_name datatype;
+
+select * from student;
+
+alter table student add location varchar(30) not null default 'Hyderabad';
+
+--To Drop a Column: ALTER TABLE table_name DROP COLUMN column_name;
+
+-- Drop the default constraint first
+
+ALTER TABLE student DROP CONSTRAINT DF__student__locatio__29221CFB;
+
+-- Then drop the column
+
+ALTER TABLE student DROP COLUMN location;
+
+
+--- alter table student drop column location;
+----ALTER TABLE student DROP COLUMN location;
+---To Change the Data Type or Size or the DataType: ALTER TABLE table_name ALTER COLUMN column_name TYPE datatype;
+
+alter table student alter column first_name varchar(50);
+
+---To Rename a Column:ALTER TABLE table_name RENAME COLUMN column_name TO new_column_name;
+---alter table student rename column location to emp_location;
+
+---Drop - deletes the entire table along with the structure
+---Truncate - Drops the table and recreates the structure. We can't give "Where" clause.
+---Delete - Deletes the Rows/Tuples in the table, we can give "Where" clause and delete exactly what needs to be deleted.
+
+Drop table employee;
+
+/* DAY  5 */ 
+
+--- Distinct, Order By, Limit, Aggregate functions, Group By, Having
+
+CREATE TABLE employee (                                ---IDENTITY(1,1) for auto_increment
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    f_nm VARCHAR(20) NOT NULL,
+    l_nm VARCHAR(20) NOT NULL,
+    age INT NOT NULL,
+    location VARCHAR(20) DEFAULT 'Hyderabad' NOT NULL,
+    dept VARCHAR(20) NOT NULL
+);
+
+
+alter table employee add salary real not null;
+
+select * from employee;
+
+insert into employee (f_nm,l_nm,age,dept,salary) values ('Ravi','Kiran',25,'HR',30000.00);
+insert into employee (f_nm,l_nm,age,dept,salary) values 
+('Priya','Darshini',28,'HR',32000.00),
+('Mohan','Bhargav',35,'IT',40000.00),
+('Manoj','Bajpai',40,'IT',45000.00);
+
+insert into employee (f_nm,l_nm,age,location,dept,salary) values 
+('Akhil','K',26,'Bangalore','IT',42000.00),
+('Raja','Roy',35,'Bangalore','IT',60000.00),
+('Shilpa','Sharma',40,'Chennai','IT',44000.00);
+
+select * from employee;
+
+---DISTINCT - unique values, no repetition
+
+Select location from employee;
+select distinct location from employee;
+select distinct dept from employee;
+
+--- distinct count
+
+select count(distinct dept) from employee;
+
+---ORDER BY - Sort the Data, arrange the data in a sequence, either ascending order (default) or in descending order (desc)
+select f_nm from employee;
+select f_nm from employee order by f_nm;
+select f_nm from employee order by f_nm desc;
+select f_nm from employee order by age;
+select f_nm from employee order by age desc;
+
+
+select * from employee;
+select * from employee order by age, salary;  ---second level sort will happen incase of a clash.
+
+--- TOP - to put a limit on the number of records to be fetched (filter - eliminate what is not required)
+
+SELECT TOP 3 * FROM employee;
+select TOP 1 * from employee;
+select TOP 3 * from employee order by salary;  -- Bottom 3 employees by Salary
+select TOP 3 * from employee order by salary desc;   -- Top 3 employees by Salary
+select TOP 5 * from employee order by age; 
+
+select * from employee;
+select * from employee where salary = 60000;
+select f_nm from employee where salary < 60000;
+
+
+select id,f_nm,l_nm from employee order by id offset 0 rows fetch next 3 rows only;  --- gives the first record
+SELECT id, f_nm, l_nm FROM employee ORDER BY id OFFSET 3 ROWS FETCH NEXT 3 ROWS ONLY;
+select id, salary, f_nm,l_nm from employee order by salary desc offset 0 rows fetch next 1 rows only;
+ 
+
+/* DAY 6 */
+ --- beginning in the 4th place it will give 3 records.
+
+
+---- AGGREGATE FUNCTIONS - Sum, Avg, Min, Max, Count, Count Distinct ....
+----To get the total number of records - select count(*) from employee;
+
+---From how many locations are people joining - 
+select count(location) from employee;  
+
+---From how many distinct locations are people joining - 
+
+select count(distinct location) from employee;
+
+---To give an alias name to the column - 
+
+select count(distinct location) as num_of_locations from employee;
+
+---To get the number of people above 30 years - 
+
+select count(f_nm) from employee where age>30;
+
+select count(f_nm) from employee where age>25 and age <35;
+
+----Total salaries being paid to employees - select sum(salary) from employee;
+
+---Average of the salaries being paid to the employees - 
+
+select avg(salary) from employee;
+
+--similarly minimum and maximum also can be done.
+
+---Identify the youngest employee - 
+
+select min(age) from employee;  ---gives the minimum age, 
+
+---but to know who is the employee - 
+
+drop table employee;
+
+/* Create a Table "employee" */
+
+CREATE TABLE employee (
+    id INT IDENTITY(1,1) PRIMARY KEY,
+    name VARCHAR(20) NOT NULL,
+    dept VARCHAR(10) NOT NULL,
+    date_of_joining DATETIME NOT NULL DEFAULT GETDATE(),
+    status VARCHAR(10) DEFAULT 'Active',
+    salary REAL NOT NULL,
+    last_updated DATETIME DEFAULT GETDATE()
+);
+
+
+select * from employee;
+ 
+/* Insert Data into the employee table */
+
+insert into employee (name, dept, salary) values ('Ravi Kiran', 'HR', 40000.00), 
+('Priya Darshini', 'IT', 25000.00),('Mohan Bhargav', 'IT', 30000.00);
+insert into employee (name, dept, salary) values ('Raja Ram', 'HR', 45000.00), 
+('Shilpa Sharma', 'IT', 25000.00),('Akhil K', 'IT', 35000.00);
+
+/* Retrieve the data from employee table */
+
+select * from employee;
+
+/*To get the total number of records */
+
+select count(*) as number_of_records from employee;
+
+/* How many departments are present */
+
+select count(distinct dept) as number_of_depatments from employee;
+
+/* To get the number of people getting salary of more than 30000 */
+
+select count(name) from employee where salary>30000;
+
+/* To get the number of people getting salary of more than 30000 but less than 45000 */
+
+select count(name) from employee where salary>30000 and salary <45000;
+select count(name) from employee where salary between 30000 and 45000;
+
+/* Total salaries being paid to employees */
+
+select sum(salary) from employee;
+
+/* Average of the salaries being paid to the employees */
+
+select avg(salary) from employee;
+
+/*Minimum salary being paid */
+
+select min(salary) from employee;
+
+/*Maximum salary being paid */
+
+select max(salary) from employee;
+
+/* Identify the employee who is getting minimum salary */
+
+select	top 1 name, salary from employee order by salary;
+
+/* Identify the employee who is getting maximum salary */
+
+select top 1 name, salary from employee order by salary desc;
+
+/* alter table employee to add location column */
+
+ALTER TABLE employee ADD location VARCHAR(20) NOT NULL DEFAULT 'Hyderabad';
+
+/* Update a few employees locations */
+
+update employee set location='Chennai' where name in ('Priya Darshini', 'Ravi Kiran');
+
+update employee set location='Mumbai' where id = 6;
+
+select * from employee order by id;
+
+/* delete records from a table */
+
+delete from employee where name='Akhil K';
+
+insert into employee (name, dept, salary, location) values ('Akhil K', 'IT', 35000.00, 'Hyderabad'),
+('Komal K', 'IT', 50000.00, 'Mumbai');
+
+/* Group By and Having Clauses */
+
+/* number of employees in each location */
+
+select location, count(*) as num_of_employees from employee group by location;
+
+
+/*number of employees in each location in each department*/
+
+select location, dept, count(*) from employee group by location, dept;
+
+/* number of employees in each location in each department and salary above 35000 */ 
+
+select location, dept, count(*) from employee where salary>35000 group by location, dept;
+
+select location, count(*) as total from employee group by location;
+
+select location, count(*) as total from employee group by location having count(*) > 1;
+
+/* Number of People from Hyderabad */
+
+Select location, count(*) from employee where location = 'Hyderabad' group by location;
+
+Select location, count(*) from employee group by location having location = 'Hyderabad';
+
+/* DAY 7 */
+
+--- JOINS 
+
+create table courses (name varchar(20), course varchar(20));
+insert into courses values ('BBB', 'Tableau'),
+('CCC', 'Python'), ('DDD', 'Data Analytics'), ('EEE', 'SQL');
+Select * from courses;
+
+--drop table courses;
+
+create table students (name varchar(20), age int);
+insert into students values ('AAA', 22), ('BBB', 24), ('CCC', 25), ('DDD',30);
+Select * from students;
+
+drop table students;
+
+---Inner Join:
+
+select students.name, age, course from students inner join courses on students.name = courses.name;
+
+
+/* Views*/
+
+create view inner_join as 
+
+select * from students UNION select * from courses;
+
+
+---Left Join:
+
+select students.name, age, course from students left join courses 
+on students.name = courses.name;
+
+
+---Right Join:
+
+select students.name, age, courses.name, course from students right join courses 
+on students.name = courses.name;
+
+---Full Join:
+
+select students.name, age, courses.name, course from students full join courses 
+on students.name = courses.name;
+
+---Left Outer Join: ( Left Only scenario) - 
+
+select students.name, age, course from students left join courses on students.name = courses.name where courses.name is null;
+
+---Right Outer Join: (Right Only Scenario) - 
+select students.name, age, courses.name, course from students right join courses  on students.name = courses.name where students.name is null;
+
+---Full Outer Join: (Not Inner) scenario - 
+
+select students.name, age, courses.name, course from students full join courses 
+on students.name = courses.name where students.name is null or courses.name is null;
+
+---UNIONS:
+
+create table May2016 (Day int, Customer varchar, Purchases int, Type varchar);
+
+---Import the data
+
+create table June2016 (Day int, Customer varchar, Purchases int, Type varchar);
+
+---Import the data
+---create table July2016 (Day int, Customer varchar, Purchases int, Type varchar);
+---Import the data
+
+select * from May2016 UNION select * from June2016 UNION select * from July2016;
+
+
+
+/*Day 8 */
+
+--- Sub Queries, Triggers
+
+drop table department;
+
+create table department3(id int primary key not null, name varchar(20));
+
+insert into department3 values(1,'IT'),(2,'HR');
+
+select * from department3;
+
+
+--- Scaler Subquery 
+-- It always return 1 row and 1 column 
+
+--- Multiple row Subquery 
+-- Sub-query that returns multiple rows and multiple columns 
+
+
+
+alter table employee2 add dept_name varchar(20);
+
+update employee2 set dept_name = 'HR' where departmentId = 1;
+update employee2 set dept_name = 'IT' where departmentId = 2;
+
+----alter table employee2 drop column  deprt;
+
+select  * from employee2;
+
+/* QUESTION - Find the employees who earn the highest salary in each department*/
+
+select dept_name, max( salary) as max_salary_dep from employee2 group by dept_name;
+
+select * from employee2 where ( dept_name , salary) in ( select 
+
+dept_name , max(salary) from employee2 group by dept_name);
+
+
+
+
+--- single column , multiple row subquery 
+/* QUESTION : Find the department who do not have any employees */ 
+
+select * from department3;
+
+select * from department3 where name not in ( select distinct dept_name from employee2);
+
+/* Correlated subquery */
+--- A subquery which is related to the outer query 
+
+/* QUESTION: Find the employees in each department who earn more than the average salary in that department;*/
+
+select avg(salary) from employee2 where dept_name = 'specific_dept';
+
+select * 
+from employee2 where salary  > (select avg(salary) 
+               from employee2  where dept_name = 'specific_dept');
+
+/* QUESTION -- Find department who do not have any employees */
+
+select * from department3 d
+where not exists ( select 1  from employee2 e where e.dept_name = d.dept_name);
+
+/* Nested Subquery */
+
+/* QUESTION: Find stores who's sales are better than the average sales across all stores */
+
+1) find the total sales for each store. 
+2) find avg sales for all the stores.
+3) compare 1 & 2 
+
+select store_name , sum(price) as total_sales 
+from sales 
+group by store_name;
+
+
+select avg(total_sales) 
+from ( select store_name , sum(price) as total_sales 
+     from sales 
+	 group by store_name) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+create table employee3
+(id INT IDENTITY(1,1) primary key, 
+ name varchar(20), 
+ salary real, 
+ departmentId int,
+ foreign key(departmentId) references department3(id)
+);
+
+insert into employee2 (name, salary, departmentId)
+values ('Ravi',70000,1),('Ram',90000,1),('Priya',80000,2),('Mohan',75000,2),('Shilpa',92000,1);
+select * from employee2;
+
+
+---- Find out the names of Employees whose salary is less than the overall average
+
+Select avg(salary) as average from employee2;  --- 81400
+
+select * from employee2 where salary < 81116;
+
+-- use of subqueries to get the same value ---81400
+
+select * from employee2 where salary < (Select avg(salary) from employee2);
+
+---To get the highest salary by department-
+
+select max(salary) from employee2 group by departmentId;
+ 
+
+---To show the department id also - 
+
+select departmentId, max(salary) from employee2 group by departmentId;
+
+--To show the name of the department?
+
+select departmentId, department.name, max(salary) as max_salary from employee2 inner join department 
+on employee2.departmentId = department.id
+group by departmentId, department.name;     
+
+---To show the name of the employee also?
+
+select departmentId, department3.name,employee2.name,ax(salary) ax_salary from employee3 nner join department3
+on employee3.departmentId = department.id
+group by departmentId, department.name, employee2.name; ----this doesnt work probably.
+
+
+---This doesn't work as we are now creating groups on the combination of Department and Employee.
+
+select department.name, employee2.name, salary 
+from employee2 inner join department 
+on employee2.departmentId = department.id 
+where (departmentId, salary) in 
+(select departmentId, max(salary) as salary from employee2 group by departmentId);
+
+
+---Selecting the second highest salary of an employee
+
+select max(salary) from employee2; --- this will give the maximum salary
+----Suppose we need those salaries which are less than this -
+
+select salary from employee2 where salary < (select max(salary) from employee2);
+
+----The second maximum means - the maximum of this new list list - 
+
+select max(salary) from employee2 where salary < (select max(salary) from employee2);
+
+---How to get top nth, this would not be an optimum solution, instead we can use this -
+
+select TOP 2salary as second_highest_salary from employee2 order by salary desc offset 1 row;
+
+
+-- This code does the same thing 
+
+SELECT TOP 1 salary AS second_highest_salary FROM (
+    SELECT salary
+    FROM employee2
+    ORDER BY salary DESC
+    OFFSET 1 ROW
+) AS Subquery
+ORDER BY salary ASC;
+
+
+
+---TRIGGERS
+
+create table sales_data(
+cust_name varchar(20) not null,
+product_name varchar(20) not null,
+sales real not null,
+quantity int not null,
+total_price real
+);
+
+DROP TABLE sales_data;
+
+insert into sales_data values('Ravi','Chair',500.0,2,5),('Ram','Bookcase',3000.0,3,2);
+
+select * from sales_data;
+
+CREATE THE FUNCTION:
+create function calc_tot_price()    
+returns trigger          
+as $$
+declare
+	total numeric;
+begin
+	total = new.sales * new.quantity;
+	new.total_price = total;
+	return new;
+end;
+$$ language plpgsql;
+
+CREATE THE TRIGGER
+create trigger calc_tot_insert
+before insert
+on sales_data
+for each row
+execute procedure calc_tot_price();
+
+---Automatically updating the lastest timestamp whenever a record is updated
+
+Create table employee(
+id serial primary key,
+name varchar not null,
+dept varchar not null,
+date_of_joining date not null default current_date,
+status varchar default 'Active',
+salary real not null,
+last_updated timestamp default CURRENT_TIMESTAMP
+);
+insert into employee (name,dept,salary) values ('Ravi Kiran','HR',40000.00), 
+('Priya Darshini','IT',25000.00),('Mohan Bhargav','Finance',30000.00);
+
+select * from employee;
+
+CREATE  FUNCTION update_on_status_change()
+RETURNS TRIGGER 
+AS $$
+BEGIN
+    NEW.last_updated = now();
+    RETURN NEW;
+END;
+$$ language plpgsql;
+
+CREATE TRIGGER status_updated_on
+    BEFORE UPDATE
+    ON
+	employee
+    FOR EACH ROW
+EXECUTE PROCEDURE update_on_status_change();
+
+update employee set status='InActive' where name = 'Priya Darshini';
+
+ /* Day 9 */ - Triggers, Indexes,-- DCL Commands
+
+--- Automatically updating the lastest timestamp whenever a record is updated
+Create table employee(
+id serial primary key,
+name varchar not null,
+dept varchar not null,
+date_of_joining date not null default current_date,
+status varchar default 'Active',
+salary real not null,
+last_updated timestamp default CURRENT_TIMESTAMP
+);
+insert into employee (name,dept,salary) values ('Ravi Kiran','HR',40000.00), 
+('Priya Darshini','IT',25000.00),('Mohan Bhargav','Finance',30000.00);
+
+select * from employee;
+
+CREATE  FUNCTION update_on_status_change()
+RETURNS TRIGGER 
+AS $$
+BEGIN
+    NEW.last_updated = now();
+    RETURN NEW;
+END;
+$$ language plpgsql;
+
+CREATE TRIGGER status_updated_on
+    BEFORE UPDATE
+    ON
+	employee
+    FOR EACH ROW
+EXECUTE PROCEDURE update_on_status_change();
+
+update employee set status='InActive' where name = 'Priya Darshini';
+
+---INDEXES:
+
+create table emp_table(id INT IDENTITY(1,1) , emp_name varchar, salary numeric);
+insert into emp_table(emp_name, salary) 
+values('Ravi',50000),('John',90000),('Shilpa',80000),('Priya',55000),('Mohan',75000),('Akhil',75000),('Manoj',95000),
+ ('Shekar',60000),('Kumar',65000),('Komal',95000);
+
+select * from emp_table;
+
+select * from emp_table where salary=75000;
+explain select * from emp_table where salary=75000;
+
+---To create an Index:
+
+create index salary_index on emp_table(salary);
+
+--- To Drop an Index:
+drop index salary_index;
+
+select * from employee;
+
+--- drop table employee;
+
+---- DCL Commands (Data Control Language)
+
+---- Creating a User
+
+CREATE LOGIN PS1 WITH PASSWORD = '11111', CHECK_POLICY = OFF;
+CREATE USER PS1 FOR LOGIN PS1;
+
+---- Granting Permissions:
+
+grant select on employee to PS1;
+grant insert on employee to PS1;
+grant update on employee to PS1;
+grant delete on employee to PS1;
+
+select * from employee;
+
+--- Revoking Permissions
+
+revoke delete on employee from PS1;
+revoke update on employee from PS1;
+revoke insert on employee from PS1;
+revoke select on employee from PS1;
+
+---- To revoke all permissions in one go:
+revoke all on employee from PS1;
+
+--- Remove a User:
+drop user PS1;
+
+/* DAY 10 */
+
+create table product (product_name varchar(20),quantity int );
+insert into product values ('Charis', 20),('Tables',5),('Bookcases',10),('Storage',25),('Phones',18);
+select * from product;
+insert into product values ('Copiers', null)
+
+select * from product;
+
+drop table product;
+
+/*CASE statement*/
+
+SELECT product_name, quantity,
+
+CASE 
+	WHEN quantity>10 THEN 'More than 10 products'
+	WHEN quantity<10 THEN 'Less than 10 products'
+	WHEN quantity=10 THEN 'Equal to 10'
+	ELSE 'No Stock'
+END
+AS Stock_Details
+
+FROM PRODUCT
+
+
+----Query Written in Tableau
+
+select orders.order_id, customer, region, product_name, sales, returned_status from orders 
+left join returns 
+on orders.order_id=returns.order_id 
+where returns.order_id is null
+
+
+
+---n Get the employees hired last 3 months in a given table 
+
+select * 
+FROM employee 
+WHERE DATEDIFF(MONTH,Hiredate, GETDATE()) BETWEEN 1 AND 3
+
+
+---Get the employees hred last 30 days 
+
+select * 
+FROM employee
+WHERE DATEDIFF(DAY, HireDate, GETDATE()) BETWEEN 1 AND 30;
